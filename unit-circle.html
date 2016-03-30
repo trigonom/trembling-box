@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>The Trembling Box</title>
+		<style type="text/css">
+			canvas {
+				border: black 1px solid;
+				margin-left: auto;
+				margin-right: auto;
+				position:absolute;
+				left: 25%;
+				top: 15%;
+			}
+
+			#header {
+				position: absolute;
+				left: 20%;
+			}
+		</style>
+		<link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Unit_circle_angles_color.svg/2000px-Unit_circle_angles_color.svg.png" />
+		<link rel="stylesheet" type="text/css" href="http://csshake.surge.sh/csshake.min.css"/>
+	</head>
+	<body background="http://www.judepullen.com/designmodelling/files/2012/09/Copy-of-graph-paper-background.gif">
+		<h1 id="header" align="center">Ahem, please touch the trembling box.</h1>
+		<canvas id="canvas" class="shake-little shake-constant" width="640" height="480"></canvas>
+
+		<script>
+			var context = document.getElementById('canvas');
+			var ctx = context.getContext('2d');
+
+			var size = {
+				x: parseInt(context.width),
+				y: parseInt(context.height)
+			};
+
+			var center = { x: size.x / 2, y: size.y / 2 };
+
+			function update(moveEvent) {
+				var rect = canvas.getBoundingClientRect();
+				var mouse = {
+					x: moveEvent.clientX - rect.left,
+					y: moveEvent.clientY - rect.top,
+				};
+
+				ctx.fillStyle = "#90C3D4";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				ctx.fillStyle = "#000000";
+
+				// Show a nice grid.
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = "black";
+				var GRID_OFFSET = 0;
+				for (var x = 0; x <= canvas.width; x += 40) {
+				    ctx.moveTo(0.5 + x + GRID_OFFSET, GRID_OFFSET);
+				    ctx.lineTo(0.5 + x + GRID_OFFSET, canvas.height + GRID_OFFSET);
+				}
+
+
+				for (var x = 0; x <= canvas.height; x += 40) {
+				    ctx.moveTo(GRID_OFFSET, 0.5 + x + GRID_OFFSET);
+				    ctx.lineTo(canvas.width + GRID_OFFSET, 0.5 + x + GRID_OFFSET);
+				}
+
+				ctx.stroke();
+
+				// Show an even nicer line guide!
+				ctx.strokeStyle = "black";
+				ctx.lineWidth = 1;
+					ctx.moveTo(mouse.x, 0);
+					ctx.lineTo(mouse.x, canvas.height);
+					ctx.moveTo(0, mouse.y);
+					ctx.lineTo(canvas.width, mouse.y);
+				ctx.stroke();
+
+				// Hypotenuse
+
+				ctx.strokeStyle = "purple";
+				ctx.lineWidth = 3;
+
+				ctx.beginPath();
+				ctx.moveTo(center.x, center.y);
+				ctx.lineTo(mouse.x, mouse.y);
+				ctx.stroke();
+
+				// Y
+				ctx.beginPath();
+				ctx.moveTo(center.x, center.y);
+				ctx.lineTo(center.x, mouse.y);
+				ctx.stroke();
+
+				// X
+				ctx.beginPath();
+				ctx.moveTo(center.x, mouse.y);
+				ctx.lineTo(mouse.x, mouse.y);
+				ctx.stroke();
+
+				// Display data!
+				var FONT_SIZE = 16;
+
+				var opposite = mouse.y - center.y;
+				var degrees = Math.atan(opposite/(mouse.x-center.x));
+
+				ctx.fillStyle = 'green';
+				var data_lines = [
+					"angle:           " + Math.floor(degrees * 180.0 / Math.PI) + "\u00B0",
+					"adjacent:      " + Math.floor(Math.abs(opposite / Math.tan(degrees))),
+					"opposite:      " + Math.floor(Math.abs(opposite)),
+					"hypotenuse: " + Math.floor(Math.abs(opposite / Math.sin(degrees)))
+				];
+
+				ctx.font = FONT_SIZE + "px Arial";
+
+				if (mouse.y + 16 * (data_lines.length + 1) > canvas.height) {
+					mouse.y = canvas.height - 16 * (data_lines.length + 1.5);
+				}
+
+				var original_x = mouse.x;
+				for (var i = data_lines.length - 1; i >= 0; i--) {
+					if (mouse.x + (1 + data_lines[i].length) * 8 > canvas.width) {
+						mouse.x = canvas.width - (1 + data_lines[i].length) * 8;
+					}
+				}
+
+				for (var i = 0; i < data_lines.length; i++) {
+					var x = mouse.x + FONT_SIZE * 1.5;
+					var y = mouse.y + 2 * FONT_SIZE + i * FONT_SIZE;
+
+					ctx.fillText(data_lines[i], x, y);
+				}
+
+				document.getElementById("header").innerHTML = "UNIT CIRCLE TRIANGLE CALCULATOR PLANE THING";
+				reveal = true;
+			}
+
+			var index = 0;
+			var colors = [
+				"red", "black", "blue", "purple", "green"
+			];
+
+			setInterval(function() {
+				if (reveal) {
+					index = (index + 1) % colors.length;
+					document.getElementById("header").style.color = colors[index];
+					document.getElementById("header").className = "shake-slow shake-constant";
+				}
+			}, 250);
+
+			canvas.addEventListener('mousemove', update, false);
+		</script>
+	</body>
+</html>
