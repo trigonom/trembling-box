@@ -64,7 +64,17 @@
 
 				ctx.stroke();
 
+
+        var opposite = mouse.y - center.y;
+        var degrees = Math.atan(opposite/(mouse.x-center.x));
+
+				// Draw a nice circle.
+				var radius = Math.abs(opposite / Math.sin(degrees));
+				ctx.beginPath();
+				  ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+					ctx.lineWidth = 5;
 				ctx.stroke();
+
 
 				// Hypotenuse
 
@@ -90,9 +100,6 @@
 
 				// Display data!
 				var FONT_SIZE = 16;
-
-				var opposite = mouse.y - center.y;
-				var degrees = Math.atan(opposite/(mouse.x-center.x));
 
 				ctx.fillStyle = 'green';
 				var data_lines = [
