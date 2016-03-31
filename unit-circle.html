@@ -86,16 +86,14 @@
 				ctx.lineTo(mouse.x, mouse.y);
 				ctx.stroke();
 
-				// Y
 				ctx.beginPath();
-				ctx.moveTo(center.x, center.y);
-				ctx.lineTo(center.x, mouse.y);
-				ctx.stroke();
+					ctx.moveTo(mouse.x, mouse.y);
 
-				// X
-				ctx.beginPath();
-				ctx.moveTo(center.x, mouse.y);
-				ctx.lineTo(mouse.x, mouse.y);
+					// Opposite
+					ctx.lineTo(mouse.x, center.y);
+
+					// Adjacent
+					ctx.lineTo(center.x, center.y);
 				ctx.stroke();
 
 				// Display data!
