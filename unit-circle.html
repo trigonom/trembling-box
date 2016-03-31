@@ -64,13 +64,6 @@
 
 				ctx.stroke();
 
-				// Show an even nicer line guide!
-				ctx.strokeStyle = "black";
-				ctx.lineWidth = 1;
-					ctx.moveTo(mouse.x, 0);
-					ctx.lineTo(mouse.x, canvas.height);
-					ctx.moveTo(0, mouse.y);
-					ctx.lineTo(canvas.width, mouse.y);
 				ctx.stroke();
 
 				// Hypotenuse
@@ -103,10 +96,10 @@
 
 				ctx.fillStyle = 'green';
 				var data_lines = [
-					"angle:           " + Math.floor(degrees * 180.0 / Math.PI) + "\u00B0",
-					"adjacent:      " + Math.floor(Math.abs(opposite / Math.tan(degrees))),
-					"opposite:      " + Math.floor(Math.abs(opposite)),
-					"hypotenuse: " + Math.floor(Math.abs(opposite / Math.sin(degrees)))
+					"angle:    " + Math.floor(degrees * 180.0 / Math.PI) + "\u00B0",
+					"cos:       " + Math.floor(Math.abs(opposite / Math.tan(degrees))),
+					"sin:        " + Math.floor(Math.abs(opposite)),
+					"radius:  " + Math.floor(Math.abs(opposite / Math.sin(degrees)))
 				];
 
 				ctx.font = FONT_SIZE + "px Arial";
